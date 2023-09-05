@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Planner</title>
+</head>
+<body>
+    <h1>Do you have any questions?
+    <form method="POST" action="{% url 'chatbot' %}">
+        {% csrf_token %}
+        <input type="text" name="question" placeholder="Ask a question...">
+        <button type="submit">Ask</button>
+    </form>
+    <div id="chatbot-response">
+        {{ response|safe }}
+    </div>
+</body>
+</html>
+    
+
