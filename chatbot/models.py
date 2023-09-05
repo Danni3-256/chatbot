@@ -1,6 +1,23 @@
 from django.db import models
 
-class chatbot(models.Model):
-    destination = models.CharField(max_length=200)
-    accomodation = models.CharField(max_length=200)
-    
+
+class Destination(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Accommodation(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Activity(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name

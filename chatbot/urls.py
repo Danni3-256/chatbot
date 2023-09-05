@@ -20,5 +20,6 @@ from chatbot import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('home/', views.home),
     path('chatbot/', views.chatbot, name='chatbot')
 ]

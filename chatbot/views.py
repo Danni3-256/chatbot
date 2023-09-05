@@ -1,32 +1,58 @@
 import openai
 from django.shortcuts import render
+from django.http import HttpResponse
 
+def home(request):
+    return HttpResponse("Home Page")
 
 def chatbot(request):
     predefined_responses = {
-        "destination_question": "This is a response about destinations.",
-        "accommodation_question": "Here's some information about accommodations.",
-        # Define more predefined responses here.
-    }
+    "destinations": [
+        {
+            "Destination1": "Queen Elizabeth National Park",
+            "Destination2": "Bwindi Impenetrable",
+            "Destination3": "Source of the Nile"
+        }
+    ],
+    "accommodation": [
+        {
+            "Accommodation1": "Mweya Lodge in Queen Elizabeth National Park",
+            "Accommodation2": "Ngorongoro Hotel in Bwindi Impenetrable",
+            "Accommodation3": "Riverside Campsite near the Source of the Nile"
+        }
+    ],
+    "activities": [
+        {
+            "Activity1": "Safari and wildlife viewing in Queen Elizabeth National Park",
+            "Activity2": "Gorilla trekking in Bwindi Impenetrable Forest",
+            "Activity3": "White-water rafting at the Source of the Nile"
+        }
+    ]
+}
 
-    # Retrieve the user's question from the HTTP POST data
     user_question = request.POST.get('question', '')
+    response = ''
 
-    # Look up the predefined response based on the user's question
-    response = predefined_responses.get(user_question, '')
+    if 'destination' in user_question.lower():
+        response = predefined_responses.get('destinations', [])
+    elif 'accommodation' in user_question.lower():
+        response = predefined_responses.get('accommodation', [])
+    elif 'activity or activities' in user_question.lower():
+        response = predefined_responses.get('activities', [])
+    else:
+        response = "I'm not sure how to answer that. You can ask about destinations, accommodations, or activities in Uganda."
 
-    # Use OpenAI API to generate a response based on user_question
-    openai.api_key = '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'
-    
+    openai.api_key = ''
+
     if user_question:
         ai_response = openai.Completion.create(
-            engine="davinci",  # You can choose an appropriate OpenAI engine
+            engine="davinci",
             prompt=user_question,
-            max_tokens=50,  # Adjust as needed
-            n=1,  # Number of responses to generate
-            stop=None  # You can specify stop words to control response length
+            max_tokens=50,
+            n=1,
+            stop=None
         )
-        combined_response = response + ai_response.choices[0].text
+        combined_response = response + [ai_response.choices[0].text]
     else:
         combined_response = response
 
